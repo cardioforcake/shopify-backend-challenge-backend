@@ -86,6 +86,5 @@ virtualenv-clone==0.5.4
 wadllib==1.3.3
 webencodings==0.5.1
 wrapt==1.12.1
-xkit==0.0.0
 zeroconf==0.24.4
 zipp==1.0.0
