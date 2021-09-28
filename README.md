@@ -1,6 +1,6 @@
 ## Stan Chao | Shopify Backend Challenge
 
-[Heroku deployment]('https://image-repository-challenge.herokuapp.com/')
+[Heroku deployment](https://image-repository-challenge.herokuapp.com/)
 
 #### Full Disclaimer
 
@@ -14,11 +14,11 @@ See list of features below.
 
 #### Features
 
-- separate [frontend]('https://image-repository-challenge.netlify.app/') and [backend]('https://image-repository-challenge.herokuapp.com/')
-- [Frontend Github]('https://github.com/cardioforcake/shopify-backend-challenge-frontend')
+- separate [frontend](https://image-repository-challenge.netlify.app/) and [backend](https://image-repository-challenge.herokuapp.com/)
+- [Frontend Github](https://github.com/cardioforcake/shopify-backend-challenge-frontend)
 - Backend is built using Django and SQLite3 Database
 - Backend is configered for Amazon AWS S3 image hosting
-- Frontend is built using React and borrows code (repurposed) from my other projects including the [Shopify Frontend Challenge]('https://stanchao-shopifychallenge.netlify.app/')
+- Frontend is built using React and borrows code (repurposed) from my other projects including the [Shopify Frontend Challenge](https://stanchao-shopifychallenge.netlify.app/)
 - Features Google Firebase authentication through the frontend
 - (Query User Images)User is able to upload images (with "title" and "creator" properties). If images are uploaded while logged in, the use is then able to query the backend to pull up all the images that they added. However the user does not need to be logged in, in order to upload anoynmous images.
 - (Delete) While logged in, the user is also able to delete the images that they added. The data for the image passed to the frontend does not include the ID of the user who added to image (however this information is stored in the back end via relationship between User and Image model). A deletion request is sent to the backend with the id of the logged in user. The image is only deleted if the id matches the id stored in the connection table)
