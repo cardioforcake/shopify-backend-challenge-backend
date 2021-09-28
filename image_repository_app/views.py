@@ -34,7 +34,7 @@ def add_image(request):
               'url':image.url,
             }
             # return JsonResponse(new_image)
-            return HttpResponseRedirect('http://localhost:3000/gallery')
+            return HttpResponseRedirect('https://image-repository-challenge.netlify.app/gallery')
         except Exception as err:
             print('An error has occured uploading file to S3')
             print(err)
@@ -77,7 +77,7 @@ def add_user_image(request, user_id):
               'url':image.url,
             }
             # return JsonResponse(new_image)
-            return HttpResponseRedirect('http://localhost:3000/gallery')
+            return HttpResponseRedirect('https://image-repository-challenge.netlify.app/gallery')
         except Exception as err:
             print('An error has occured uploading file to S3')
             print(err)
@@ -96,7 +96,7 @@ def get_user_images(request, user_id):
 def delete_user_image(request, user_id, image_id):
     try:
         User.objects.get(uid=user_id).images.get(id=image_id).delete()
-        return HttpResponseRedirect('http://localhost:3000/user/gallery')
+        return HttpResponseRedirect('https://image-repository-challenge.netlify.app/user/gallery')
     except Exception as err:
         print('An error deleting user image')
         print(err)
