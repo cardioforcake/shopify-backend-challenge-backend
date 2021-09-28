@@ -1,5 +1,5 @@
 from .models import Image, User
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 import boto3
 import uuid
 
@@ -17,7 +17,15 @@ def add_image(request):
         try:
             s3.upload_fileobj(image_file, BUCKET, key)
             url=f'https://{BUCKET}{S3_BASE_URL}/{key}'
-            image = Image(url=url,title=request.POST['title'], creator=request.POST['creator'])
+            if request.POST['title']:
+                img_title = request.POST['title']
+            else:
+                img_title = 'Unkown'
+            if request.POST['creator']:
+                img_creator = request.POST['creator']
+            else:
+                img_creator = 'Unkown'
+            image = Image(url=url,title=img_title, creator=img_creator)
             image.save()
             new_image={
               'id': image.id,
@@ -25,7 +33,8 @@ def add_image(request):
               'creator':image.creator,
               'url':image.url,
             }
-            return JsonResponse(new_image)
+            # return JsonResponse(new_image)
+            return HttpResponseRedirect('http://localhost:3000/gallery')
         except Exception as err:
             print('An error has occured uploading file to S3')
             print(err)
@@ -41,14 +50,23 @@ def add_user_image(request, user_id):
         try:
             s3.upload_fileobj(image_file, BUCKET, key)
             url=f'https://{BUCKET}{S3_BASE_URL}/{key}'
-            image = Image(url=url,title=request.POST['title'], creator=request.POST['creator'])
+            if request.POST['title']:
+                img_title = request.POST['title']
+            else:
+                img_title = 'Unkown'
+            if request.POST['creator']:
+                img_creator = request.POST['creator']
+            else:
+                img_creator = 'Unkown'
+            image = Image(url=url,title=img_title, creator=img_creator)
             image.save()
-            if User.objects.filter(id=user_id).exists():
-              usr = User.objects.get(id=user_id)
+            if User.objects.filter(uid=user_id).exists():
+              usr = User.objects.get(uid=user_id)
               usr.images.add(image)
               usr.save()
             else:
-              usr = User(id=user_id)
+              usr = User(uid=user_id)
+              usr.save()
               usr.images.add(image)
               usr.save()
 
@@ -58,7 +76,8 @@ def add_user_image(request, user_id):
               'creator':image.creator,
               'url':image.url,
             }
-            return JsonResponse(new_image)
+            # return JsonResponse(new_image)
+            return HttpResponseRedirect('http://localhost:3000/gallery')
         except Exception as err:
             print('An error has occured uploading file to S3')
             print(err)
@@ -67,10 +86,19 @@ def add_user_image(request, user_id):
 
 def get_user_images(request, user_id):
     try:
-        usr_imgs = list(User.objects.get(id=user_id).images.values())
+        usr_imgs = list(User.objects.get(uid=user_id).images.values())
         return JsonResponse({'imgs':usr_imgs})
     except Exception as err:
-        print('An error has occured uploading file to S3')
+        print('An error getting user images')
+        print(err)
+        return JsonResponse({'error': err})
+
+def delete_user_image(request, user_id, image_id):
+    try:
+        User.objects.get(uid=user_id).images.get(id=image_id).delete()
+        return HttpResponseRedirect('http://localhost:3000/user/gallery')
+    except Exception as err:
+        print('An error deleting user image')
         print(err)
         return JsonResponse({'error': err})
 
